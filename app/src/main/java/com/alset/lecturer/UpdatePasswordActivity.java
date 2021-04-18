@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.alset.lecturer.api.LoginResponse;
+import com.alset.lecturer.api.PasswordChangeResponse;
 import com.alset.lecturer.api.PasswordRequest;
 import com.alset.lecturer.api.RetrofitClient;
 
@@ -38,7 +39,7 @@ public class UpdatePasswordActivity extends AppCompatActivity {
 
                 if (password.isEmpty() || confirmPassword.isEmpty()){
                     Toast.makeText(UpdatePasswordActivity.this, "Password can not be empty!", Toast.LENGTH_LONG).show();
-                } else if (password != confirmPassword) {
+                } else if (!password.equals(confirmPassword)) {
                     Toast.makeText(UpdatePasswordActivity.this, "Passwords are not matching", Toast.LENGTH_LONG).show();
                 } else {
                     setPassword(password, username, session);
@@ -50,12 +51,12 @@ public class UpdatePasswordActivity extends AppCompatActivity {
     private void setPassword(String password, String username, String session){
         PasswordRequest passwordRequest = new PasswordRequest(username, password, session);
 
-        Call<LoginResponse> call = RetrofitClient.getInstance().getAlsetAPI().setPassword(passwordRequest);
+        Call<PasswordChangeResponse> call = RetrofitClient.getInstance().getAlsetAPI().setPassword(passwordRequest);
 
-        call.enqueue(new Callback<LoginResponse>() {
+        call.enqueue(new Callback<PasswordChangeResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response != null && response.body().getSession().isEmpty()) {
+            public void onResponse(Call<PasswordChangeResponse> call, Response<PasswordChangeResponse> response) {
+                if (response != null && !response.body().getAccessToken().isEmpty()) {
                     Toast.makeText(UpdatePasswordActivity.this, "Update Successful", Toast.LENGTH_LONG).show();
                     new Handler().postDelayed(new Runnable(){
                         @Override
@@ -69,7 +70,7 @@ public class UpdatePasswordActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(Call<PasswordChangeResponse> call, Throwable t) {
                 Toast.makeText(UpdatePasswordActivity.this, "Password Update Failed. Please try again!", Toast.LENGTH_LONG).show();
             }
         });
