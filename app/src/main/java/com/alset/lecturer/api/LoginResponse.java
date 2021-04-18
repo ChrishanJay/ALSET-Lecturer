@@ -10,6 +10,12 @@ public class LoginResponse {
     @SerializedName("session")
     private String session;
 
+    @SerializedName("statusCode")
+    private long statusCode;
+
+    @SerializedName("body")
+    private PasswordChangeResponse body;
+
     public String getUsername() {
         return username;
     }
@@ -24,5 +30,13 @@ public class LoginResponse {
 
     public void setSession(String session) {
         this.session = session;
+    }
+
+    public long getStatusCode() {
+        return statusCode;
+    }
+
+    public PasswordChangeResponse getBody() {
+        return body;
     }
 }
