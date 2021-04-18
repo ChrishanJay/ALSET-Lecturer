@@ -1,5 +1,7 @@
 package com.alset.lecturer;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +22,8 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +43,25 @@ public class LoginActivity extends AppCompatActivity {
                 if (username.isEmpty() && password.isEmpty()){
                     Toast.makeText(LoginActivity.this, "Email or Password can not be empty!", Toast.LENGTH_LONG).show();
                 } else {
+                    showProgress(LoginActivity.this);
                     login(username, password);
                 }
             }
         });
+    }
 
+    private void showProgress(Context context){
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Logging in....");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
+
+    private void hideProgress() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     private void login(String username, String password) {
@@ -52,7 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response != null && response.body().getSession().isEmpty()) {
+                hideProgress();
+                if (response != null && response.isSuccessful() && response.body().getStatusCode() == 200) {
                     Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
                     new Handler().postDelayed(new Runnable(){
                         @Override
@@ -62,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                             LoginActivity.this.finish();
                         }
                     }, 3000);
-                } else if (response != null && !response.body().getSession().isEmpty()) {
+                } else if (response != null && !response.isSuccessful() ) {
                     Toast.makeText(LoginActivity.this, "Login Successful. Please Update the password!", Toast.LENGTH_LONG).show();
                     new Handler().postDelayed(new Runnable(){
                         @Override
@@ -80,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
+                hideProgress();
                 Toast.makeText(LoginActivity.this, "Login Failed. Please try again!", Toast.LENGTH_LONG).show();
             }
         });
