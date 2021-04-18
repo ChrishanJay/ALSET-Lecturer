@@ -26,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="300dp"
+        android:background="#FFEB3B"
         android:fontFamily="serif-monospace"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
