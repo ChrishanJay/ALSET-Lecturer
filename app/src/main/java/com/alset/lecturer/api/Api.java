@@ -17,7 +17,24 @@ public interface Api {
     @POST("newpwreq-cognito")
     Call<PasswordChangeResponse> setPassword(@Body PasswordRequest passwordRequest);
 
-    @GET("get-courses")
-    Call<CourseResponse> getCourses();
+    @POST("add-class")
+    Call<AddClassResponse> addClass(@Body AddClassRequest addClassRequest);
 
+    @GET("get-courses")
+    Call<List<CourseResponse>> getCourses();
+
+    @GET("get-modules")
+    Call<List<ModuleResponse>> getModules();
+
+    @GET("get-lecturers")
+    Call<List<LecturerResponse>> getLecturers();
+
+    @GET("get-classes")
+    Call<List<ClassesResponse>> getClasses();
+
+    @GET("get-students")
+    Call<StudentsResponse> getStudents();
+
+    @GET("get-attendance")
+    Call<AttendanceResponse> getAttendance();
 }

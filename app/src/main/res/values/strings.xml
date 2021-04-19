@@ -19,4 +19,8 @@
     <string name="set_password">Set New Password</string>
     <string name="set_a_new_password">Set a new Password</string>
     <string name="password_policy">Password must have a number, a lowercase letter, uppercase letter and a special character. And length should be between 6 to 16 characters.</string>
+    <string name="view_attendance">View Attendance</string>
+    <string name="start_new_class">Start New Class</string>
+    <string name="select_the_class">Select the Class</string>
+    <string name="select_the_module">Select the Module</string>
 </resources>
