@@ -24,7 +24,7 @@ public class NewClassActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
     private Toast errorToast;
-    private Spinner classSpinner, moduleSpinner;
+    private Spinner moduleSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +32,6 @@ public class NewClassActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_class);
 
         errorToast = Toast.makeText(NewClassActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG);
-
-        classSpinner = findViewById(R.id.classSpinner);
         moduleSpinner = findViewById(R.id.moduleSpinner);
 
         showProgress(NewClassActivity.this);
@@ -54,52 +52,9 @@ public class NewClassActivity extends AppCompatActivity {
         }
     }
 
-    private void updateClassSpinner(List<ClassesResponse> classList){
-        ArrayAdapter<ClassesResponse> adapter = new ArrayAdapter<ClassesResponse>(this, android.R.layout.simple_spinner_dropdown_item, classList);
-        classSpinner.setAdapter(adapter);
-    }
-
     private void updateModuleSpinner(List<ModuleResponse> classList){
         ArrayAdapter<ModuleResponse> adapter = new ArrayAdapter<ModuleResponse>(this, android.R.layout.simple_spinner_dropdown_item, classList);
         moduleSpinner.setAdapter(adapter);
-    }
-
-    private void getClasses(){
-        Call<List<ClassesResponse>> call = RetrofitClient.getInstance().getAlsetAPI().getClasses();
-        call.enqueue(new Callback<List<ClassesResponse>>() {
-            @Override
-            public void onResponse(Call<List<ClassesResponse>> call, Response<List<ClassesResponse>> response) {
-                if (response != null && response.isSuccessful()) {
-                    getLecturers();
-                    List<ClassesResponse> classList = response.body();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ClassesResponse>> call, Throwable t) {
-                hideProgress();
-                errorToast.show();
-            }
-        });
-    }
-
-    private void getLecturers(){
-        Call<List<LecturerResponse>> call = RetrofitClient.getInstance().getAlsetAPI().getLecturers();
-        call.enqueue(new Callback<List<LecturerResponse>>() {
-            @Override
-            public void onResponse(Call<List<LecturerResponse>> call, Response<List<LecturerResponse>> response) {
-                if (response != null && response.isSuccessful()) {
-                    getModules();
-                    List<LecturerResponse> LecturerList = response.body();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<LecturerResponse>> call, Throwable t) {
-                hideProgress();
-                errorToast.show();
-            }
-        });
     }
 
     private void getModules(){

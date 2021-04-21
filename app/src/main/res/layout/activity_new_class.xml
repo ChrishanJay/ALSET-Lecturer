@@ -7,31 +7,6 @@
     tools:context=".NewClassActivity">
 
     <LinearLayout
-        android:id="@+id/classLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="50dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/classText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/select_the_class" />
-
-        <Spinner
-            android:id="@+id/classSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/moduleLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -41,7 +16,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/classLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/moduleText"
@@ -54,6 +29,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dateLayer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="50dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/moduleLayout">
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_the_date" />
+        
     </LinearLayout>
 
 

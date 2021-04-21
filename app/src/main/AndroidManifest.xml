@@ -8,10 +8,10 @@
         android:allowBackup="true"
         android:icon="@drawable/alset"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/alset"
         android:supportsRtl="true"
         android:theme="@style/Theme.ALSETLecturer">
-        <activity android:name=".NewClassActivity"></activity>
+        <activity android:name=".NewClassActivity"/>
         <activity android:name=".UpdatePasswordActivity" />
         <activity android:name=".HomeActivity" />
         <activity
