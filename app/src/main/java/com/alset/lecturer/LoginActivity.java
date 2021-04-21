@@ -71,28 +71,31 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 hideProgress();
-                if (response != null && response.isSuccessful() && response.body().getStatusCode() == 200) {
-                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-                    new Handler().postDelayed(new Runnable(){
-                        @Override
-                        public void run() {
-                            Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                            LoginActivity.this.startActivity(mainIntent);
-                            LoginActivity.this.finish();
-                        }
-                    }, 3000);
-                } else if (response != null && !response.isSuccessful() ) {
-                    Toast.makeText(LoginActivity.this, "Login Successful. Please Update the password!", Toast.LENGTH_LONG).show();
-                    new Handler().postDelayed(new Runnable(){
-                        @Override
-                        public void run() {
-                            Intent passwordIntent = new Intent(LoginActivity.this, UpdatePasswordActivity.class);
-                            passwordIntent.putExtra("username", response.body().getUsername());
-                            passwordIntent.putExtra("session", response.body().getSession());
-                            LoginActivity.this.startActivity(passwordIntent);
-                            LoginActivity.this.finish();
-                        }
-                    }, 3000);
+                if (response.body() != null) {
+                    if (response.isSuccessful() && response.body().getStatusCode() == 200) {
+                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                        new Handler().postDelayed(new Runnable(){
+                            @Override
+                            public void run() {
+                                Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                                mainIntent.putExtra("username", username);
+                                LoginActivity.this.startActivity(mainIntent);
+                                LoginActivity.this.finish();
+                            }
+                        }, 3000);
+                    } else if (response.isSuccessful()) {
+                        Toast.makeText(LoginActivity.this, "Login Successful. Please Update the password!", Toast.LENGTH_LONG).show();
+                        new Handler().postDelayed(new Runnable(){
+                            @Override
+                            public void run() {
+                                Intent passwordIntent = new Intent(LoginActivity.this, UpdatePasswordActivity.class);
+                                passwordIntent.putExtra("username", response.body().getUsername());
+                                passwordIntent.putExtra("session", response.body().getSession());
+                                LoginActivity.this.startActivity(passwordIntent);
+                                LoginActivity.this.finish();
+                            }
+                        }, 3000);
+                    }
                 }
 
             }
