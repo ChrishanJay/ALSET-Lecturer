@@ -22,8 +22,7 @@ public class AddClassRequest {
     @SerializedName("module_id")
     private String moduleId;
 
-
-    public void setClassId(String classId) {
+    public AddClassRequest(String classId) {
         this.classId = classId;
     }
 
