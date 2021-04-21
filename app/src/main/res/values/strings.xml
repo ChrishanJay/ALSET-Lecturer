@@ -24,4 +24,8 @@
     <string name="select_the_class">Select the Class</string>
     <string name="select_the_module">Select the Module</string>
     <string name="select_the_date">Select The Date</string>
+    <string name="select_start_time">Select Start Time</string>
+    <string name="select_end_time">Select End Time</string>
+    <string name="title_activity_new_class">ALSET - Create New Class</string>
+    <string name="title_view_attendance">ALSET - View Attendance</string>
 </resources>

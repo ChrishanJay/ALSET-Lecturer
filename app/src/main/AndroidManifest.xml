@@ -11,7 +11,12 @@
         android:roundIcon="@drawable/alset"
         android:supportsRtl="true"
         android:theme="@style/Theme.ALSETLecturer">
-        <activity android:name=".NewClassActivity"/>
+        <activity
+            android:name=".ViewAttendanceActivity"
+            android:label="@string/title_view_attendance" />
+        <activity
+            android:name=".NewClassActivity"
+            android:label="@string/title_activity_new_class" />
         <activity android:name=".UpdatePasswordActivity" />
         <activity android:name=".HomeActivity" />
         <activity
