@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,11 +26,14 @@ public class HomeActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private TextView lecId, lecName, lecEmail, lecPhone;
     private String username;
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        count = 0;
 
         lecId = findViewById(R.id.lecIdTxt);
         lecName = findViewById(R.id.lecNameTxt);
@@ -46,6 +51,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent addClassIntent = new Intent(HomeActivity.this, NewClassActivity.class);
+                addClassIntent.putExtra("username", username);
                 startActivity(addClassIntent);
             }
         });
@@ -84,18 +90,39 @@ public class HomeActivity extends AppCompatActivity {
                     for (LecturerResponse lecturer: lecturerList) {
                         if (lecturer.getLecturerId().equalsIgnoreCase(username)){
                             updateUI(lecturer);
+                            break;
                         }
                     }
                 } else {
-                    Toast.makeText(HomeActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
+                    goBackToLogin();
                 }
             }
 
             @Override
             public void onFailure(Call<List<LecturerResponse>> call, Throwable t) {
-                hideProgress();
-                Toast.makeText(HomeActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
+                Log.e("ALSET", t.getLocalizedMessage());
+                if (count > 2) {
+                    count++;
+                    Toast.makeText(HomeActivity.this, "Request Failed. Retrying again!", Toast.LENGTH_LONG).show();
+                    getLecturers();
+                } else {
+                    goBackToLogin();
+                }
+
             }
         });
+    }
+
+    private void goBackToLogin(){
+        hideProgress();
+        Toast.makeText(HomeActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                Intent mainIntent = new Intent(HomeActivity.this, LoginActivity.class);
+                HomeActivity.this.startActivity(mainIntent);
+                HomeActivity.this.finish();
+            }
+        }, 3000);
     }
 }
