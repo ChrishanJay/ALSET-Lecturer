@@ -23,4 +23,5 @@
     <string name="start_new_class">Start New Class</string>
     <string name="select_the_class">Select the Class</string>
     <string name="select_the_module">Select the Module</string>
+    <string name="select_the_date">Select The Date</string>
 </resources>
