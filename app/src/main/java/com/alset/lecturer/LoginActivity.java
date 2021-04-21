@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
                 String username = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
 
-                if (username.isEmpty() && password.isEmpty()){
+                if (username.isEmpty() || password.isEmpty()){
                     Toast.makeText(LoginActivity.this, "Email or Password can not be empty!", Toast.LENGTH_LONG).show();
                 } else {
                     showProgress(LoginActivity.this);
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                                 LoginActivity.this.startActivity(mainIntent);
                                 LoginActivity.this.finish();
                             }
-                        }, 3000);
+                        }, 1000);
                     } else if (response.isSuccessful()) {
                         Toast.makeText(LoginActivity.this, "Login Successful. Please Update the password!", Toast.LENGTH_LONG).show();
                         new Handler().postDelayed(new Runnable(){
@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                                 LoginActivity.this.startActivity(passwordIntent);
                                 LoginActivity.this.finish();
                             }
-                        }, 3000);
+                        }, 1000);
                     }
                 }
 
