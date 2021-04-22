@@ -11,6 +11,7 @@
         android:roundIcon="@drawable/alset"
         android:supportsRtl="true"
         android:theme="@style/Theme.ALSETLecturer">
+        <activity android:name=".ViewClassesActivity"></activity>
         <activity
             android:name=".ViewAttendanceActivity"
             android:label="@string/title_view_attendance" />

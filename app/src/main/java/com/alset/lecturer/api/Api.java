@@ -36,5 +36,5 @@ public interface Api {
     Call<StudentsResponse> getStudents();
 
     @GET("get-attendance")
-    Call<AttendanceResponse> getAttendance();
+    Call<List<AttendanceResponse>> getAttendance();
 }
