@@ -12,9 +12,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alset.lecturer.api.ClassesResponse;
 import com.alset.lecturer.api.LecturerResponse;
 import com.alset.lecturer.api.RetrofitClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -44,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
             username = getIntent().getStringExtra("username");
         }
 
-        showProgress(this);
+        showProgress(this, "Getting Lecturer Profile Information...");
         getLecturers();
 
         findViewById(R.id.btnAddClass).setOnClickListener(new View.OnClickListener() {
@@ -53,6 +55,14 @@ public class HomeActivity extends AppCompatActivity {
                 Intent addClassIntent = new Intent(HomeActivity.this, NewClassActivity.class);
                 addClassIntent.putExtra("username", username);
                 startActivity(addClassIntent);
+            }
+        });
+
+        findViewById(R.id.btnViewAttendance).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showProgress(HomeActivity.this, "Getting Available classes...");
+                getClasses();
             }
         });
     }
@@ -64,9 +74,13 @@ public class HomeActivity extends AppCompatActivity {
         lecEmail.setText(lecturer.getEmail());
     }
 
-    private void showProgress(Context context){
+    private void showDialog(List<ClassesResponse> classList) {
+
+    }
+
+    private void showProgress(Context context, String msg){
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Getting Lecturer Profile Information...");
+        progressDialog.setMessage(msg);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
         progressDialog.setCancelable(false);
@@ -76,6 +90,33 @@ public class HomeActivity extends AppCompatActivity {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+    }
+
+    private void getClasses() {
+        Call<List<ClassesResponse>> call = RetrofitClient.getInstance().getAlsetAPI().getClasses();
+        call.enqueue(new Callback<List<ClassesResponse>>() {
+            @Override
+            public void onResponse(Call<List<ClassesResponse>> call, Response<List<ClassesResponse>> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    List<ClassesResponse> classList = response.body();
+                    List<ClassesResponse> filteredClassList = new ArrayList<>();
+
+                    for (ClassesResponse classResponse: classList) {
+                        if (classResponse.getLecturerId().equalsIgnoreCase(username)) {
+                            filteredClassList.add(classResponse);
+                        }
+                    }
+                    showDialog(filteredClassList);
+                } else {
+                    Toast.makeText(HomeActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ClassesResponse>> call, Throwable t) {
+                Toast.makeText(HomeActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void getLecturers(){
