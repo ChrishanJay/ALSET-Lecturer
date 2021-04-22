@@ -61,8 +61,10 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.btnViewAttendance).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showProgress(HomeActivity.this, "Getting Available classes...");
-                getClasses();
+
+                Intent viewClassesIntent = new Intent(HomeActivity.this, ViewClassesActivity.class);
+                viewClassesIntent.putExtra("username", username);
+                startActivity(viewClassesIntent);
             }
         });
     }
@@ -72,10 +74,6 @@ public class HomeActivity extends AppCompatActivity {
         lecName.setText(lecturer.getName());
         lecPhone.setText(lecturer.getMobile());
         lecEmail.setText(lecturer.getEmail());
-    }
-
-    private void showDialog(List<ClassesResponse> classList) {
-
     }
 
     private void showProgress(Context context, String msg){
@@ -92,32 +90,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void getClasses() {
-        Call<List<ClassesResponse>> call = RetrofitClient.getInstance().getAlsetAPI().getClasses();
-        call.enqueue(new Callback<List<ClassesResponse>>() {
-            @Override
-            public void onResponse(Call<List<ClassesResponse>> call, Response<List<ClassesResponse>> response) {
-                if (response.isSuccessful() && response.body() != null){
-                    List<ClassesResponse> classList = response.body();
-                    List<ClassesResponse> filteredClassList = new ArrayList<>();
 
-                    for (ClassesResponse classResponse: classList) {
-                        if (classResponse.getLecturerId().equalsIgnoreCase(username)) {
-                            filteredClassList.add(classResponse);
-                        }
-                    }
-                    showDialog(filteredClassList);
-                } else {
-                    Toast.makeText(HomeActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ClassesResponse>> call, Throwable t) {
-                Toast.makeText(HomeActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 
     private void getLecturers(){
         Call<List<LecturerResponse>> call = RetrofitClient.getInstance().getAlsetAPI().getLecturers();

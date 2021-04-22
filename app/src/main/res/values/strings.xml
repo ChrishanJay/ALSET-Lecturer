@@ -28,4 +28,5 @@
     <string name="select_end_time">Select End Time</string>
     <string name="title_activity_new_class">ALSET - Create New Class</string>
     <string name="title_view_attendance">ALSET - View Attendance</string>
+    <string name="select_a_class_to_view_the_attendance">Select a Class to view the attendance</string>
 </resources>

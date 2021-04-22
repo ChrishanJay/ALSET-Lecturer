@@ -15,14 +15,14 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Select a Class to view the attendance"
+        android:text="@string/select_a_class_to_view_the_attendance"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/classesListView"
+        android:id="@+id/classesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
