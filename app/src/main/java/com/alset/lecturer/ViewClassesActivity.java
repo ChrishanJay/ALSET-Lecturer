@@ -69,7 +69,6 @@ public class ViewClassesActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ModuleResponse>> call, Response<List<ModuleResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    hideProgress();
                     List<ModuleResponse> moduleList = response.body();
                     getClasses(moduleList);
                 }
@@ -79,6 +78,7 @@ public class ViewClassesActivity extends AppCompatActivity {
             public void onFailure(Call<List<ModuleResponse>> call, Throwable t) {
                 hideProgress();
                 Toast.makeText(ViewClassesActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
     }
@@ -100,15 +100,18 @@ public class ViewClassesActivity extends AppCompatActivity {
 
                     mAdapter = new ClassAdapter(ViewClassesActivity.this, filteredClassList, moduleList);
                     recyclerView.setAdapter(mAdapter);
+                    hideProgress();
 
                 } else {
                     Toast.makeText(ViewClassesActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ClassesResponse>> call, Throwable t) {
                 Toast.makeText(ViewClassesActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
     }

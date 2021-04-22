@@ -75,8 +75,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ClassAdapter.ViewHolder holder, int position) {
         final ClassesResponse classesResponse = classList.get(position);
-
-        holder.moduleName.setText(getModuleName(classesResponse.getModuleId()));
+        String moduleName = getModuleName(classesResponse.getModuleId());
+        holder.moduleName.setText(moduleName);
         holder.date.setText(String.format(Locale.getDefault(), "Date: %s from %s to %s",
                 classesResponse.getDate(),
                 classesResponse.getStartTime().split(" ")[1],
@@ -87,6 +87,10 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
             public void onClick(View view) {
                 Intent viewAttendanceActivity = new Intent(context, ViewAttendanceActivity.class);
                 viewAttendanceActivity.putExtra("classId", classesResponse.getClassId());
+                viewAttendanceActivity.putExtra("moduleName", moduleName);
+                viewAttendanceActivity.putExtra("date", classesResponse.getDate());
+                viewAttendanceActivity.putExtra("startTime", classesResponse.getStartTime());
+                viewAttendanceActivity.putExtra("endTime", classesResponse.getEndTime());
                 context.startActivity(viewAttendanceActivity);
             }
         });

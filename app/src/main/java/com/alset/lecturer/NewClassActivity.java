@@ -184,7 +184,8 @@ public class NewClassActivity extends AppCompatActivity implements DatePickerDia
     }
 
     private void createClass(ModuleResponse module, String date, String startTime, String endTime, String username) {
-        AddClassRequest request = new AddClassRequest(String.valueOf(System.currentTimeMillis()));
+        long number = (long) Math.floor(Math.random() * 9_000_000L);
+        AddClassRequest request = new AddClassRequest(String.valueOf(number));
         request.setDate(date);
         request.setEndTime(date + " " + endTime);
         request.setStartTime(date + " " + startTime);
@@ -201,6 +202,10 @@ public class NewClassActivity extends AppCompatActivity implements DatePickerDia
 
                     Intent mainIntent = new Intent(NewClassActivity.this, ViewAttendanceActivity.class);
                     mainIntent.putExtra("classId", response.body().getClassId());
+                    mainIntent.putExtra("moduleName", module.getName());
+                    mainIntent.putExtra("date", date);
+                    mainIntent.putExtra("startTime", date + " " + startTime);
+                    mainIntent.putExtra("endTime", date + " " + endTime);
                     NewClassActivity.this.startActivity(mainIntent);
                     NewClassActivity.this.finish();
 
