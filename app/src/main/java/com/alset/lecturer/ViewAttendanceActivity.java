@@ -12,10 +12,13 @@ import android.widget.Toast;
 
 import com.alset.lecturer.api.AttendanceResponse;
 import com.alset.lecturer.api.ClassesResponse;
+import com.alset.lecturer.api.ModuleResponse;
 import com.alset.lecturer.api.RetrofitClient;
+import com.alset.lecturer.api.StudentsResponse;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +34,7 @@ public class ViewAttendanceActivity extends AppCompatActivity {
     private String classId, moduleName, date, startTime, endTime;
     private ProgressDialog progressDialog;
     private TextView count, moduleText;
+    private int studentAPICount, attendanceAPICount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +55,12 @@ public class ViewAttendanceActivity extends AppCompatActivity {
         count = findViewById(R.id.attendanceCount);
         moduleText.setText(String.format(Locale.getDefault(), "Students Attendance for the %S Class", moduleName));
 
-
-        getAttendance(classId);
+        getStudents(classId);
     }
 
     private void showProgress(Context context){
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Creating new class...");
+        progressDialog.setMessage("Getting Attendance Info...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
         progressDialog.setCancelable(false);
@@ -95,7 +98,36 @@ public class ViewAttendanceActivity extends AppCompatActivity {
         }
     }
 
-    private void getAttendance(String classId) {
+    private void getStudents(String classId) {
+        Call<List<StudentsResponse>> call = RetrofitClient.getInstance().getAlsetAPI().getStudents();
+        call.enqueue(new Callback<List<StudentsResponse>>() {
+            @Override
+            public void onResponse(Call<List<StudentsResponse>> call, Response<List<StudentsResponse>> response) {
+                studentAPICount++;
+                if (response.isSuccessful() && response.body() != null){
+                    List<StudentsResponse> studentList = response.body();
+                    getAttendance(classId, studentList);
+
+                } else {
+                    getStudents(classId);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StudentsResponse>> call, Throwable t) {
+                if (studentAPICount < 2) {
+                    studentAPICount++;
+                    getStudents(classId);
+                } else {
+                    hideProgress();
+                    Toast.makeText(ViewAttendanceActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+        });
+    }
+
+    private void getAttendance(String classId, List<StudentsResponse> studentList) {
         Call<List<AttendanceResponse>> call = RetrofitClient.getInstance().getAlsetAPI().getAttendance();
         call.enqueue(new Callback<List<AttendanceResponse>>() {
             @Override
@@ -106,12 +138,22 @@ public class ViewAttendanceActivity extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable(){
                             @Override
                             public void run() {
-                                getAttendance(classId);
+                                getAttendance(classId, studentList);
                             }
                         }, 10000);
                     }
 
-                    count.setText(String.format(Locale.getDefault(), "Students Count: %02d", response.body().size()));
+                    List<AttendanceResponse> attendanceList = response.body();
+                    List<AttendanceResponse> filteredAttendanceList = new ArrayList<>();
+
+                    for (AttendanceResponse attendance: attendanceList) {
+                        if (attendance.getClassId().equalsIgnoreCase(classId)) {
+                            filteredAttendanceList.add(attendance);
+                        }
+                    }
+
+
+                    count.setText(String.format(Locale.getDefault(), "Students Count: %02d", filteredAttendanceList.size()));
 
                 } else {
                     Toast.makeText(ViewAttendanceActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();

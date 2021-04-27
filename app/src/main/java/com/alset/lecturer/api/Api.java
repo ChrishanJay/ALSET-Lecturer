@@ -33,7 +33,7 @@ public interface Api {
     Call<List<ClassesResponse>> getClasses();
 
     @GET("get-students")
-    Call<StudentsResponse> getStudents();
+    Call<List<StudentsResponse>> getStudents();
 
     @GET("get-attendance")
     Call<List<AttendanceResponse>> getAttendance();
