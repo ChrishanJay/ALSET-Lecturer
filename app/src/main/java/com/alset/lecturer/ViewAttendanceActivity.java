@@ -1,6 +1,8 @@
 package com.alset.lecturer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,7 +12,9 @@ import android.os.Handler;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alset.lecturer.api.AttendanceAdapter;
 import com.alset.lecturer.api.AttendanceResponse;
+import com.alset.lecturer.api.ClassAdapter;
 import com.alset.lecturer.api.ClassesResponse;
 import com.alset.lecturer.api.ModuleResponse;
 import com.alset.lecturer.api.RetrofitClient;
@@ -34,7 +38,11 @@ public class ViewAttendanceActivity extends AppCompatActivity {
     private String classId, moduleName, date, startTime, endTime;
     private ProgressDialog progressDialog;
     private TextView count, moduleText;
-    private int studentAPICount, attendanceAPICount;
+    private int studentAPICount;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,11 @@ public class ViewAttendanceActivity extends AppCompatActivity {
         moduleText = findViewById(R.id.module);
         count = findViewById(R.id.attendanceCount);
         moduleText.setText(String.format(Locale.getDefault(), "Students Attendance for the %S Class", moduleName));
+
+        recyclerView = findViewById(R.id.studentsRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         getStudents(classId);
     }
@@ -80,11 +93,7 @@ public class ViewAttendanceActivity extends AppCompatActivity {
         startTimeCalendar.setTime(Objects.requireNonNull(stringToDate(startTime)));
         endTimeCalendar.setTime(Objects.requireNonNull(stringToDate(endTime)));
 
-        if (currentTimeCalendar.after(startTimeCalendar) && currentTimeCalendar.before(endTimeCalendar)) {
-            return true;
-        }
-
-        return false;
+        return currentTimeCalendar.after(startTimeCalendar) && currentTimeCalendar.before(endTimeCalendar);
     }
 
     private Date stringToDate(String stringDate) {
@@ -151,7 +160,8 @@ public class ViewAttendanceActivity extends AppCompatActivity {
                             filteredAttendanceList.add(attendance);
                         }
                     }
-
+                    mAdapter = new AttendanceAdapter(ViewAttendanceActivity.this, filteredAttendanceList, studentList);
+                    recyclerView.setAdapter(mAdapter);
 
                     count.setText(String.format(Locale.getDefault(), "Students Count: %02d", filteredAttendanceList.size()));
 

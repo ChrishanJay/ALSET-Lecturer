@@ -34,7 +34,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         }
     }
 
-    public AttendanceAdapter(List<AttendanceResponse> attendanceList, List<StudentsResponse> studentList, Context context) {
+    public AttendanceAdapter(Context context, List<AttendanceResponse> attendanceList, List<StudentsResponse> studentList) {
         this.attendanceList = attendanceList;
         this.studentList = studentList;
         this.context = context;
