@@ -227,7 +227,7 @@ public class NewClassActivity extends AppCompatActivity implements DatePickerDia
         call.enqueue(new Callback<List<ModuleResponse>>() {
             @Override
             public void onResponse(Call<List<ModuleResponse>> call, Response<List<ModuleResponse>> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     hideProgress();
                     List<ModuleResponse> moduleList = response.body();
                     List<ModuleResponse> filteredModuleList = new ArrayList<>();

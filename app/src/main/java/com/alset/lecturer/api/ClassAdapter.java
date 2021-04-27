@@ -20,11 +20,11 @@ import java.util.Locale;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
 
-    private List<ClassesResponse> classList;
-    private List<ModuleResponse> moduleList;
-    private Context context;
+    private final List<ClassesResponse> classList;
+    private final List<ModuleResponse> moduleList;
+    private final Context context;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView moduleName;
         public TextView date;
