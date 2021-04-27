@@ -95,6 +95,8 @@ public class LoginActivity extends AppCompatActivity {
                                 LoginActivity.this.finish();
                             }
                         }, 1000);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Login Failed. Please try again!", Toast.LENGTH_LONG).show();
                     }
                 }
 

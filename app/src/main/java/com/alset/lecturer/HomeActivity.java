@@ -35,8 +35,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        count = 0;
-
         lecId = findViewById(R.id.lecIdTxt);
         lecName = findViewById(R.id.lecNameTxt);
         lecPhone = findViewById(R.id.lecPhoneTxt);
@@ -97,9 +95,9 @@ public class HomeActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<LecturerResponse>>() {
             @Override
             public void onResponse(Call<List<LecturerResponse>> call, Response<List<LecturerResponse>> response) {
-                hideProgress();
-                if (response.isSuccessful() && response.body() != null) {
 
+                if (response.isSuccessful() && response.body() != null) {
+                    hideProgress();
                     List<LecturerResponse> lecturerList = response.body();
                     for (LecturerResponse lecturer: lecturerList) {
                         if (lecturer.getLecturerId().equalsIgnoreCase(username)){
@@ -108,16 +106,20 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    goBackToLogin();
+                    if (count < 3) {
+                        count++;
+                        getLecturers();
+                    } else {
+                        goBackToLogin();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<List<LecturerResponse>> call, Throwable t) {
                 Log.e("ALSET", t.getLocalizedMessage());
-                if (count > 2) {
+                if (count < 3) {
                     count++;
-                    Toast.makeText(HomeActivity.this, "Request Failed. Retrying again!", Toast.LENGTH_LONG).show();
                     getLecturers();
                 } else {
                     goBackToLogin();

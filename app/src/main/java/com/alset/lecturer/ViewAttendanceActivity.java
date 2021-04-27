@@ -156,7 +156,8 @@ public class ViewAttendanceActivity extends AppCompatActivity {
                     List<AttendanceResponse> filteredAttendanceList = new ArrayList<>();
 
                     for (AttendanceResponse attendance: attendanceList) {
-                        if (attendance.getClassId().equalsIgnoreCase(classId)) {
+                        String id = attendance.getClassId();
+                        if (id != null && id.equalsIgnoreCase(classId)) {
                             filteredAttendanceList.add(attendance);
                         }
                     }
@@ -167,14 +168,12 @@ public class ViewAttendanceActivity extends AppCompatActivity {
 
                 } else {
                     Toast.makeText(ViewAttendanceActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
-                    finish();
                 }
             }
 
             @Override
             public void onFailure(Call<List<AttendanceResponse>> call, Throwable t) {
                 Toast.makeText(ViewAttendanceActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG).show();
-                finish();
             }
         });
     }
