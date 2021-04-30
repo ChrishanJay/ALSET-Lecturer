@@ -44,29 +44,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:hint="@string/username"
+        android:autofillHints="@string/email"
         android:ems="10"
-        tools:text="ms20922184"
+        android:hint="@string/username"
         android:inputType="textEmailAddress"
+        android:labelFor="@id/etUserName"
         app:layout_constraintBottom_toTopOf="@+id/etPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="@string/email"
-        android:labelFor="@id/etUserName"/>
+        tools:text="ms20922184" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:hint="@string/password"
+        android:autofillHints="@string/password"
         android:ems="10"
-        tools:text="Tempp@ss123"
+        android:hint="@string/password"
+        android:imeOptions="actionDone"
         android:inputType="textPassword"
+        android:labelFor="@id/etPassword"
         app:layout_constraintBottom_toTopOf="@+id/btnGo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="@string/password"
-        android:labelFor="@id/etPassword" />
+        tools:text="Tempp@ss123" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

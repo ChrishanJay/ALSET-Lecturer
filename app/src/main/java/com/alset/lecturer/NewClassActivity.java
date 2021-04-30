@@ -60,7 +60,7 @@ public class NewClassActivity extends AppCompatActivity implements DatePickerDia
         errorToast = Toast.makeText(NewClassActivity.this, "Request Failed. Please try again!", Toast.LENGTH_LONG);
         moduleSpinner = findViewById(R.id.moduleSpinner);
 
-        showProgress(NewClassActivity.this);
+        showProgress(NewClassActivity.this, "Getting Module Details...");
         getModules();
 
         etDate = findViewById(R.id.etDate);
@@ -91,7 +91,7 @@ public class NewClassActivity extends AppCompatActivity implements DatePickerDia
         findViewById(R.id.btnAddClass).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showProgress(NewClassActivity.this);
+                showProgress(NewClassActivity.this, "Creating new class...");
                 if (selectedModule == null) {
                     Toast.makeText(NewClassActivity.this, "Please select a module.", Toast.LENGTH_LONG).show();
                 } else if (etDate.getText().toString().isEmpty()) {
@@ -164,9 +164,9 @@ public class NewClassActivity extends AppCompatActivity implements DatePickerDia
         timePickerDialog.show(getSupportFragmentManager(), type);
     }
 
-    private void showProgress(Context context){
+    private void showProgress(Context context, String msg){
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Creating new class...");
+        progressDialog.setMessage(msg);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
         progressDialog.setCancelable(false);
